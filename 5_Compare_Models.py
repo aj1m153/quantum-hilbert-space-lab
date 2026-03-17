@@ -123,6 +123,7 @@ if st.button("Run Comparison", type="primary"):
     from sklearn.preprocessing import LabelEncoder, StandardScaler
     from sklearn.pipeline import Pipeline
     from sklearn.metrics import (accuracy_score, f1_score, roc_auc_score,
+                                  precision_score, recall_score,
                                   mean_squared_error, r2_score, mean_absolute_error,
                                   confusion_matrix)
 
@@ -169,8 +170,10 @@ if st.button("Run Comparison", type="primary"):
             y_pred = est.predict(X_test)
 
             if task == "Classification":
-                acc = accuracy_score(y_test, y_pred)
-                f1  = f1_score(y_test, y_pred, average="weighted", zero_division=0)
+                acc       = accuracy_score(y_test, y_pred)
+                f1        = f1_score(y_test, y_pred, average="weighted", zero_division=0)
+                precision = precision_score(y_test, y_pred, average="weighted", zero_division=0)
+                recall    = recall_score(y_test, y_pred, average="weighted", zero_division=0)
                 try:
                     if len(np.unique(y_test)) == 2:
                         proba = est.predict_proba(X_test)[:,1] if hasattr(est, "predict_proba") else y_pred
@@ -181,7 +184,13 @@ if st.button("Run Comparison", type="primary"):
                 except Exception:
                     auc = None
 
-                row = {"Model": model_name, "Accuracy": round(acc, 4), "F1 Score": round(f1, 4)}
+                row = {
+                    "Model":     model_name,
+                    "Accuracy":  round(acc, 4),
+                    "Precision": round(precision, 4),
+                    "Recall":    round(recall, 4),
+                    "F1 Score":  round(f1, 4),
+                }
                 if auc:
                     row["ROC-AUC"] = round(auc, 4)
                 cms[model_name] = confusion_matrix(y_test, y_pred)
