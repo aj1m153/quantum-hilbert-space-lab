@@ -15,82 +15,62 @@ from sklearn.pipeline import Pipeline
 st.set_page_config(page_title="Compare Models", layout="wide")
 st.title("Compare Models")
 
-# ── Check dataset ─────────────────────────────────────────
+# ── Check dataset ─────────────────────────────
 if "df" not in st.session_state:
-    st.warning("Please upload a dataset first.")
+    st.warning("Upload a dataset first.")
     st.stop()
 
 df = st.session_state["df"].copy()
 
-# ── Models ───────────────────────────────────────────────
+# ── Models ───────────────────────────────────
 CLF_MODELS = {
-    "Logistic Regression": ("sklearn.linear_model", "LogisticRegression", {"C": 1.0, "max_iter": 500}),
-    "Random Forest": ("sklearn.ensemble", "RandomForestClassifier", {"n_estimators": 100}),
-    "Gradient Boosting": ("sklearn.ensemble", "GradientBoostingClassifier", {"n_estimators": 100}),
-    "XGBoost": ("xgboost", "XGBClassifier", {"n_estimators": 100}),
-    "LightGBM": ("lightgbm", "LGBMClassifier", {"n_estimators": 100}),
-    "SVM": ("sklearn.svm", "SVC", {"C": 1.0, "kernel": "rbf"}),
+    "Logistic Regression": ("sklearn.linear_model", "LogisticRegression", {"max_iter": 500}),
+    "Random Forest": ("sklearn.ensemble", "RandomForestClassifier", {}),
+    "Gradient Boosting": ("sklearn.ensemble", "GradientBoostingClassifier", {}),
+    "SVM": ("sklearn.svm", "SVC", {"probability": True}),
     "KNN": ("sklearn.neighbors", "KNeighborsClassifier", {"n_neighbors": 5}),
 }
 
 REG_MODELS = {
     "Linear Regression": ("sklearn.linear_model", "LinearRegression", {}),
-    "Ridge": ("sklearn.linear_model", "Ridge", {"alpha": 1.0}),
-    "Lasso": ("sklearn.linear_model", "Lasso", {"alpha": 0.1}),
-    "Random Forest": ("sklearn.ensemble", "RandomForestRegressor", {"n_estimators": 100}),
+    "Ridge": ("sklearn.linear_model", "Ridge", {}),
+    "Random Forest": ("sklearn.ensemble", "RandomForestRegressor", {}),
 }
 
-# ── Step 1 ───────────────────────────────────────────────
-st.subheader("Step 1 — Configure Data")
+# ── Step 1 ───────────────────────────────────
+st.subheader("Step 1 — Data Setup")
 
-task = st.radio("Task type", ["Classification", "Regression"], horizontal=True)
+task = st.radio("Task", ["Classification", "Regression"], horizontal=True)
 MODEL_CATALOGUE = CLF_MODELS if task == "Classification" else REG_MODELS
 
 cols = df.columns.tolist()
-target_col = st.selectbox("Target column", cols)
-feature_cols = st.multiselect("Feature columns", [c for c in cols if c != target_col],
-                             default=[c for c in cols if c != target_col])
+target = st.selectbox("Target column", cols)
+features = st.multiselect("Feature columns", [c for c in cols if c != target],
+                         default=[c for c in cols if c != target])
 
-if not feature_cols:
+if not features:
     st.stop()
 
 seed = st.number_input("Random seed", 0, 9999, 42)
-test_size = st.slider("Test size (%)", 10, 40, 20) / 100
+test_size = st.slider("Test size %", 10, 40, 20) / 100
 
-# ── Step 2 ───────────────────────────────────────────────
+# ── Step 2 ───────────────────────────────────
 st.subheader("Step 2 — Select Models")
 
-selected_models = st.multiselect(
-    "Choose models",
+selected = st.multiselect(
+    "Models",
     list(MODEL_CATALOGUE.keys()),
     default=list(MODEL_CATALOGUE.keys())[:3]
 )
 
-if not selected_models:
+if not selected:
     st.stop()
 
-# ── Step 3 ───────────────────────────────────────────────
-st.subheader("Step 3 — Configure Parameters")
-
-model_configs = {}
-for m in selected_models:
-    _, _, defaults = MODEL_CATALOGUE[m]
-    params = {}
-    with st.expander(m):
-        for k, v in defaults.items():
-            if isinstance(v, int):
-                params[k] = st.number_input(f"{m}_{k}", value=v)
-            elif isinstance(v, float):
-                params[k] = st.number_input(f"{m}_{k}", value=v)
-    model_configs[m] = params
-
-# ── Step 4 ───────────────────────────────────────────────
-st.subheader("Step 4 — Train")
-
+# ── Train ────────────────────────────────────
 if st.button("Run Comparison"):
 
-    X = df[feature_cols]
-    y = df[target_col]
+    X = df[features]
+    y = df[target]
 
     cat_cols = X.select_dtypes(include=["object", "category"]).columns
     num_cols = X.select_dtypes(include=np.number).columns
@@ -110,14 +90,27 @@ if st.button("Run Comparison"):
     results = []
     trained_models = {}
 
-    for model_name in selected_models:
-        module_name, class_name, _ = MODEL_CATALOGUE[model_name]
+    for model_name in selected:
+        module_name, class_name, params = MODEL_CATALOGUE[model_name]
+
+        # Initialize row with ALL metrics (ensures consistency)
+        row = {
+            "Model": model_name,
+            "Accuracy": np.nan,
+            "Precision": np.nan,
+            "Recall": np.nan,
+            "F1": np.nan,
+            "ROC-AUC": np.nan,
+            "RMSE": np.nan,
+            "MAE": np.nan,
+            "R2": np.nan
+        }
 
         try:
             mod = __import__(module_name, fromlist=[class_name])
             cls = getattr(mod, class_name)
 
-            model = cls(**model_configs.get(model_name, {}))
+            model = cls(**params)
 
             pipe = Pipeline([
                 ("prep", preprocessor),
@@ -125,53 +118,41 @@ if st.button("Run Comparison"):
             ])
 
             pipe.fit(X_train, y_train)
-            y_pred = pipe.predict(X_test)
+            preds = pipe.predict(X_test)
 
             trained_models[model_name] = pipe
 
             if task == "Classification":
                 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 
-                acc = accuracy_score(y_test, y_pred)
-                prec = precision_score(y_test, y_pred, average="weighted", zero_division=0)
-                rec = recall_score(y_test, y_pred, average="weighted", zero_division=0)
-                f1 = f1_score(y_test, y_pred, average="weighted")
+                row["Accuracy"] = accuracy_score(y_test, preds)
+                row["Precision"] = precision_score(y_test, preds, average="weighted", zero_division=0)
+                row["Recall"] = recall_score(y_test, preds, average="weighted", zero_division=0)
+                row["F1"] = f1_score(y_test, preds, average="weighted")
 
-                auc = None
                 if hasattr(pipe, "predict_proba"):
                     try:
                         proba = pipe.predict_proba(X_test)
-                        auc = roc_auc_score(y_test, proba, multi_class="ovr")
+                        row["ROC-AUC"] = roc_auc_score(y_test, proba, multi_class="ovr")
                     except:
                         pass
 
-                row = {
-                    "Model": model_name,
-                    "Accuracy": acc,
-                    "Precision": prec,
-                    "Recall": rec,
-                    "F1": f1,
-                    "ROC-AUC": auc
-                }
-
             else:
-                from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+                from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-                rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-                mae = mean_absolute_error(y_test, y_pred)
-                r2 = r2_score(y_test, y_pred)
-
-                row = {"Model": model_name, "RMSE": rmse, "MAE": mae, "R2": r2}
-
-            results.append(row)
+                row["RMSE"] = np.sqrt(mean_squared_error(y_test, preds))
+                row["MAE"] = mean_absolute_error(y_test, preds)
+                row["R2"] = r2_score(y_test, preds)
 
         except Exception as e:
-            results.append({"Model": model_name, "Error": str(e)})
+            row["Error"] = str(e)
+
+        results.append(row)
 
     st.session_state["results"] = pd.DataFrame(results)
     st.session_state["models"] = trained_models
 
-# ── Results ───────────────────────────────────────────────
+# ── Results ─────────────────────────────────
 if "results" in st.session_state:
 
     results_df = st.session_state["results"]
@@ -179,51 +160,73 @@ if "results" in st.session_state:
     st.subheader("Metrics Table")
     st.dataframe(results_df)
 
-    # Download metrics
+    # Download
     st.download_button("Download Metrics CSV",
                        results_df.to_csv(index=False).encode(),
                        "metrics.csv")
 
-    # ── Visual Comparison (UPDATED) ───────────────────────
+    # ── Visual Comparison ────────────────────
     st.subheader("Visual Comparison")
 
-    metric_cols = [c for c in results_df.columns if c != "Model"]
+    metric_cols = [
+        c for c in ["Accuracy", "Precision", "Recall", "F1", "ROC-AUC", "RMSE", "MAE", "R2"]
+        if c in results_df.columns and results_df[c].notna().any()
+    ]
 
-    chosen_metric = st.selectbox(
-        "Choose metric",
-        metric_cols,
-        index=metric_cols.index("Precision") if "Precision" in metric_cols else 0
-    )
+    if metric_cols:
+        default_metric = "Precision" if "Precision" in metric_cols else metric_cols[0]
 
-    plot_df = results_df.dropna(subset=[chosen_metric])
+        metric = st.selectbox("Choose metric", metric_cols,
+                              index=metric_cols.index(default_metric))
 
-    fig, ax = plt.subplots()
+        plot_df = results_df[["Model", metric]].dropna()
 
-    vals = plot_df[chosen_metric].values
-    best_idx = vals.argmax() if chosen_metric not in ["RMSE", "MAE"] else vals.argmin()
+        fig, ax = plt.subplots()
+        vals = plot_df[metric].values
+        best_idx = vals.argmax() if metric not in ["RMSE", "MAE"] else vals.argmin()
 
-    bars = ax.bar(plot_df["Model"], vals)
+        bars = ax.bar(plot_df["Model"], vals)
 
-    for i, bar in enumerate(bars):
-        if i == best_idx:
-            bar.set_edgecolor("black")
-            bar.set_linewidth(2)
+        for i, b in enumerate(bars):
+            if i == best_idx:
+                b.set_edgecolor("black")
+                b.set_linewidth(2)
 
-    ax.set_title(f"{chosen_metric} Comparison")
-    ax.tick_params(axis="x", rotation=30)
+        ax.set_title(metric)
+        ax.tick_params(axis="x", rotation=30)
+        st.pyplot(fig)
 
-    st.pyplot(fig)
+    # ── NEW: Precision vs Recall Chart ───────
+    if "Precision" in results_df.columns and "Recall" in results_df.columns:
 
-    st.success(f"Best model on {chosen_metric}: {plot_df.iloc[best_idx]['Model']}")
+        st.subheader("Precision vs Recall Comparison")
 
-    # ── Export Predictions ───────────────────────────────
+        pr_df = results_df[["Model", "Precision", "Recall"]].dropna()
+
+        if not pr_df.empty:
+            x = np.arange(len(pr_df))
+            width = 0.35
+
+            fig, ax = plt.subplots()
+
+            ax.bar(x - width/2, pr_df["Precision"], width, label="Precision")
+            ax.bar(x + width/2, pr_df["Recall"], width, label="Recall")
+
+            ax.set_xticks(x)
+            ax.set_xticklabels(pr_df["Model"], rotation=30)
+            ax.set_title("Precision vs Recall")
+            ax.legend()
+
+            st.pyplot(fig)
+
+    # ── Export Predictions ───────────────────
     st.subheader("Export Predictions")
 
     model_choice = st.selectbox("Select model", list(st.session_state["models"].keys()))
 
     if st.button("Download Predictions"):
         model = st.session_state["models"][model_choice]
-        preds = model.predict(df[feature_cols])
+        preds = model.predict(df[features])
 
         out = df.copy()
         out["prediction"] = preds
