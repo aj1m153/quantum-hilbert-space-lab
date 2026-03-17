@@ -26,6 +26,7 @@ if task in ("Classification", "Regression"):
     from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
     from sklearn.preprocessing import LabelEncoder, StandardScaler
     from sklearn.metrics import (accuracy_score, f1_score, roc_auc_score,
+                                  precision_score, recall_score,
                                   mean_squared_error, r2_score, mean_absolute_error,
                                   confusion_matrix)
 
@@ -184,8 +185,10 @@ if task in ("Classification", "Regression"):
         st.subheader("Results")
 
         if task == "Classification":
-            acc = accuracy_score(y_test, y_pred)
-            f1  = f1_score(y_test, y_pred, average="weighted", zero_division=0)
+            acc       = accuracy_score(y_test, y_pred)
+            f1        = f1_score(y_test, y_pred, average="weighted", zero_division=0)
+            precision = precision_score(y_test, y_pred, average="weighted", zero_division=0)
+            recall    = recall_score(y_test, y_pred, average="weighted", zero_division=0)
             try:
                 if len(np.unique(y_test)) == 2:
                     proba = est.predict_proba(X_test)[:,1] if hasattr(est,"predict_proba") else y_pred
@@ -196,11 +199,13 @@ if task in ("Classification", "Regression"):
             except Exception:
                 auc = None
 
-            c1, c2, c3 = st.columns(3)
-            c1.metric("Accuracy", f"{acc:.4f}")
-            c2.metric("F1 Score (Weighted)", f"{f1:.4f}")
+            c1, c2, c3, c4, c5 = st.columns(5)
+            c1.metric("Accuracy",  f"{acc:.4f}")
+            c2.metric("Precision", f"{precision:.4f}")
+            c3.metric("Recall",    f"{recall:.4f}")
+            c4.metric("F1 Score",  f"{f1:.4f}")
             if auc:
-                c3.metric("ROC-AUC", f"{auc:.4f}")
+                c5.metric("ROC-AUC", f"{auc:.4f}")
 
             cm = confusion_matrix(y_test, y_pred)
             fig, ax = plt.subplots(figsize=(5,4))
@@ -215,7 +220,12 @@ if task in ("Classification", "Regression"):
             st.pyplot(fig, use_container_width=False)
             plt.close()
 
-            metrics_dict = {"accuracy": acc, "f1_weighted": f1}
+            metrics_dict = {
+                "accuracy":  acc,
+                "precision": precision,
+                "recall":    recall,
+                "f1_weighted": f1,
+            }
             if auc:
                 metrics_dict["roc_auc"] = auc
 
