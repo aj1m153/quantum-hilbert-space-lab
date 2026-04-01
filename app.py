@@ -44,9 +44,9 @@ if not _cfg_file.exists():
     _cfg_file.write_text(textwrap.dedent("""
         [theme]
         primaryColor = CB_BLUE
-        backgroundColor = "#F8FAFC"
-        secondaryBackgroundColor = "#E5E7EB"
-        textColor = "#111827"
+        backgroundColor = "#000000"
+        secondaryBackgroundColor = "#161616"
+        textColor = "#f0f0f0"
         font = "sans serif"
     """).strip())
 
@@ -55,32 +55,32 @@ if not _cfg_file.exists():
 # ─────────────────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=Outfit:wght@300;400;700;900&display=swap');
 :root {
-  --bg:#F8FAFC;
-  --surface:#ffffff;
-  --surface2:#E5E7EB;
-  --border:#E5E7EB;
-  --border2:#d1d5db;
-  --accent:#0077BB;
-  --accent-light:#E8F4FD;
-  --accent-dark:#005B8E;
-  --positive:#009988;
-  --positive-light:#E0F5F3;
-  --negative:#CC3311;
-  --negative-light:#FAEAE6;
-  --warning:#EE7733;
-  --warning-light:#FDF2E9;
-  --text:#111827;
-  --text2:#374151;
-  --muted:#6B7280;
-  --muted2:#9ca3af;
+  --bg:#000000;
+  --surface:#0d0d0d;
+  --surface2:#161616;
+  --border:#222222;
+  --border2:#2a2a2a;
+  --accent:#00ffe0;
+  --accent-light:#002b27;
+  --accent-dark:#00ffe0;
+  --positive:#00e5a0;
+  --positive-light:#002b22;
+  --negative:#ff4d4d;
+  --negative-light:#2b0a0a;
+  --warning:#fdcb6e;
+  --warning-light:#2b2000;
+  --text:#f0f0f0;
+  --text2:#cccccc;
+  --muted:#888888;
+  --muted2:#666666;
 }
 *,*::before,*::after{box-sizing:border-box;}
 html,body,[class*="css"]{
   background-color:var(--bg)!important;
   color:var(--text)!important;
-  font-family:'Inter',sans-serif;
+  font-family:'Outfit',sans-serif;
 }
 .qh-header{
   padding:2rem 0 1.4rem;
@@ -88,7 +88,7 @@ html,body,[class*="css"]{
   margin-bottom:1.8rem;
 }
 .qh-title{
-  font-family:'Inter',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:1.9rem;
   font-weight:700;
   letter-spacing:-0.5px;
@@ -105,7 +105,7 @@ html,body,[class*="css"]{
   color:var(--accent);
 }
 .qh-sub{
-  font-family:'JetBrains Mono',monospace;
+  font-family:'IBM Plex Mono',monospace;
   font-size:0.68rem;
   color:var(--muted);
   letter-spacing:0.5px;
@@ -117,7 +117,7 @@ html,body,[class*="css"]{
   color:var(--accent-dark);
   border-radius:6px;
   font-size:0.65rem;
-  font-family:'JetBrains Mono',monospace;
+  font-family:'IBM Plex Mono',monospace;
   padding:3px 10px;
   letter-spacing:0.3px;
   margin-right:6px;
@@ -137,7 +137,7 @@ html,body,[class*="css"]{
 }
 .m-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);}
 .m-label{
-  font-family:'JetBrains Mono',monospace;
+  font-family:'IBM Plex Mono',monospace;
   font-size:0.6rem;
   color:var(--muted);
   text-transform:uppercase;
@@ -146,7 +146,7 @@ html,body,[class*="css"]{
   font-weight:500;
 }
 .m-val{
-  font-family:'Inter',sans-serif;
+  font-family:'Outfit',sans-serif;
   font-size:1.45rem;
   font-weight:700;
   line-height:1;
@@ -156,7 +156,7 @@ html,body,[class*="css"]{
 .m-val.c-a2{ color:var(--accent); }
 .m-val.c-a3{ color:var(--negative); }
 .m-val.c-g { color:var(--warning); }
-.m-delta{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted2);margin-top:5px;}
+.m-delta{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--muted2);margin-top:5px;}
 .sec{
   font-size:.72rem;
   font-weight:600;
@@ -166,7 +166,7 @@ html,body,[class*="css"]{
   border-left:3px solid var(--accent);
   padding-left:.75rem;
   margin:1.8rem 0 .75rem;
-  font-family:'JetBrains Mono',monospace;
+  font-family:'IBM Plex Mono',monospace;
 }
 .ibox{
   background:var(--surface);
@@ -189,16 +189,16 @@ html,body,[class*="css"]{
 }
 [data-testid="stSidebar"] label{
   color:var(--muted)!important;
-  font-family:'JetBrains Mono',monospace!important;
+  font-family:'IBM Plex Mono',monospace!important;
   font-size:.67rem!important;
   text-transform:uppercase!important;
   letter-spacing:0.6px!important;
 }
 [data-testid="stSidebar"] h2{
   color:var(--text)!important;
-  font-family:'Inter',sans-serif!important;
-  font-size:.8rem!important;
-  font-weight:700!important;
+  font-family:'IBM Plex Mono',monospace!important;
+  font-size:.75rem!important;
+  font-weight:600!important;
   letter-spacing:0!important;
   text-transform:none!important;
 }
@@ -400,13 +400,13 @@ LABELS = [
 ]
 
 PTHEME = dict(
-    paper_bgcolor="#F8FAFC", plot_bgcolor="#ffffff",
-    font=dict(family="Inter, sans-serif", color="#111827", size=12),
-    xaxis=dict(gridcolor="#E5E7EB", linecolor="#D1D5DB", showgrid=True, zeroline=False),
-    yaxis=dict(gridcolor="#E5E7EB", linecolor="#D1D5DB", showgrid=True, zeroline=False),
+    paper_bgcolor="#000000", plot_bgcolor="#000000",
+    font=dict(family="IBM Plex Mono, monospace", color="#d0d0d0", size=12),
+    xaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=True, zeroline=False),
+    yaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=True, zeroline=False),
     margin=dict(l=55, r=25, t=50, b=45),
-    legend=dict(bgcolor="#ffffff", bordercolor="#E5E7EB", borderwidth=1,
-                font=dict(color="#111827", size=11)),
+    legend=dict(bgcolor="#0d0d0d", bordercolor="#222222", borderwidth=1,
+                font=dict(color="#e0e0e0", size=11)),
 )
 
 # ── Paul Tol colorblind-safe palette ──────────────────────────────────────────
@@ -424,10 +424,10 @@ CB_NAVY    = "#003366"   # dark accent
 CB_SEQ = [CB_BLUE, CB_CYAN, CB_TEAL, CB_ORANGE, CB_RED, CB_MAGENTA, CB_GREY, CB_NAVY]
 
 # Colorblind-safe diverging scale (blue → white → red/orange)
-CB_DIVERGE = [[0.0, CB_RED], [0.5, "#F8FAFC"], [1.0, CB_BLUE]]
+CB_DIVERGE = [[0.0, CB_RED], [0.5, "#111111"], [1.0, CB_BLUE]]
 
 # Sequential (low→high) scale
-CB_SEQ_SCALE = [[0.0, "#F8FAFC"], [0.35, CB_CYAN], [0.7, CB_BLUE], [1.0, CB_NAVY]]
+CB_SEQ_SCALE = [[0.0, "#111111"], [0.35, CB_CYAN], [0.7, CB_BLUE], [1.0, CB_NAVY]]
 
 # Sharpe colorscale (low=grey → high=teal/navy)
 CB_SHARPE_SCALE = [
@@ -586,15 +586,23 @@ with st.sidebar:
     st.markdown("---")
 
     # ── Stock selector — full universe, searchable ─────────────────────────
+    st.markdown(
+        "<span style='font-family:IBM Plex Mono;font-size:.62rem;color:#555;'>"
+        "Type any name or ticker to search 130+ — or enter custom below</span>",
+        unsafe_allow_html=True,
+    )
     stock_choice = st.selectbox(
         "Stock",
         options=list(STOCK_UNIVERSE.keys()),
         index=0,
-        help="Type to search across 100+ stocks, ETFs & ADRs",
+        help="Type any name or ticker to search. Use Custom at the bottom for any symbol.",
     )
     if STOCK_UNIVERSE[stock_choice] == "CUSTOM":
-        ticker = st.text_input("Ticker Symbol", value="AAPL",
-                               max_chars=12).upper().strip()
+        ticker = st.text_input(
+            "Any valid ticker symbol",
+            value="AAPL", max_chars=15,
+            help="Works with any Yahoo Finance ticker: AAPL, BRK-B, 9988.HK, BTC-USD, RELIANCE.NS",
+        ).upper().strip()
     else:
         ticker = STOCK_UNIVERSE[stock_choice]
 
@@ -748,8 +756,8 @@ dc = "c-a3" if n_detected > 0 else "c-a"
 rc = "c-a3" if recent_d > sigma_thresh else "c-g"
 pc = "c-a3" if pct_chg < 0 else "c-a"
 
-st.markdown(f"### {comp_name} &nbsp;<code style='font-size:.8rem;background:#f0ede8;padding:3px 8px;border-radius:4px'>{ticker}</code>", unsafe_allow_html=True)
-st.markdown(f"<span style='font-family:JetBrains Mono;font-size:.72rem;color:#374151'>{sector}</span>", unsafe_allow_html=True)
+st.markdown(f"### {comp_name} &nbsp;<code style='font-size:.8rem;background:#161616;padding:3px 8px;border-radius:4px'>{ticker}</code>", unsafe_allow_html=True)
+st.markdown(f"<span style='font-family:IBM Plex Mono;font-size:.72rem;color:#888888'>{sector}</span>", unsafe_allow_html=True)
 
 st.markdown(f"""
 <div class="m-grid">
@@ -825,7 +833,7 @@ with tabs[0]:
         line=dict(color=CB_RED, width=1, dash="dot"), name="MA 200"))
     fig_price.update_layout(**PTHEME, height=380,
         title=dict(text=f"{ticker} — Adjusted Close  |  Pink = Manifold Deviation",
-                   font=dict(color="#374151", size=12, family="Inter")),
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
         xaxis_title="Date", yaxis_title="Price ($)")
     st.plotly_chart(fig_price, use_container_width=True)
 
@@ -837,7 +845,7 @@ with tabs[0]:
         marker_color=vol_colors, name="Volume",
     ))
     fig_vol.update_layout(**PTHEME, height=180,
-        title=dict(text="Volume", font=dict(color="#374151", size=12, family="Inter")))
+        title=dict(text="Volume", font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")))
     st.plotly_chart(fig_vol, use_container_width=True)
 
     # ── MONTE CARLO ──
@@ -885,7 +893,7 @@ with tabs[0]:
         line=dict(color=CB_CYAN, width=1, dash="dash"), name="95th pct"))
     fig_mc.update_layout(**PTHEME, height=420,
         title=dict(text=f"Monte Carlo GBM — {n_paths} paths, {horizon}d horizon",
-                   font=dict(color="#374151", size=12, family="Inter")),
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
         xaxis_title="Trading Days", yaxis_title="Price ($)")
     st.plotly_chart(fig_mc, use_container_width=True)
 
@@ -912,7 +920,7 @@ with tabs[0]:
                        annotation_font=dict(color=CB_BLUE, size=10))
     fig_dist.update_layout(**PTHEME, height=280,
         title=dict(text="1-Year Return Distribution (Monte Carlo)",
-                   font=dict(color="#374151", size=12, family="Inter")),
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
         xaxis_title="Return (%)", yaxis_title="Frequency")
     st.plotly_chart(fig_dist, use_container_width=True)
 
@@ -942,7 +950,7 @@ with tabs[1]:
             size=2.5, color=d_arr[ni],
             colorscale=[[0,CB_BLUE],[0.4,CB_CYAN],[0.75,CB_ORANGE],[1,CB_RED]],
             cmin=0, cmax=sigma_thresh*1.8,
-            colorbar=dict(title="Mahal σ", thickness=10, x=1.02, titlefont=dict(color="#374151")),
+            colorbar=dict(title="Mahal σ", thickness=10, x=1.02),
             opacity=0.65,
         ),
         name="Normal States",
@@ -966,21 +974,21 @@ with tabs[1]:
     ))
     pc_ev = pca3.explained_variance_ratio_ * 100
     fig3d.update_layout(
-        paper_bgcolor="#ffffff",
+        paper_bgcolor="#000000",
         scene=dict(
-            bgcolor="#ffffff",
-            xaxis=dict(backgroundcolor="#ffffff", gridcolor="#E5E7EB",
+            bgcolor="#000000",
+            xaxis=dict(backgroundcolor="#000000", gridcolor="#1e1e1e",
                        title=f"PC₁ {pc_ev[0]:.1f}%"),
-            yaxis=dict(backgroundcolor="#ffffff", gridcolor="#E5E7EB",
+            yaxis=dict(backgroundcolor="#000000", gridcolor="#1e1e1e",
                        title=f"PC₂ {pc_ev[1]:.1f}%"),
-            zaxis=dict(backgroundcolor="#ffffff", gridcolor="#E5E7EB",
+            zaxis=dict(backgroundcolor="#000000", gridcolor="#1e1e1e",
                        title=f"PC₃ {pc_ev[2]:.1f}%"),
         ),
-        font=dict(family="Inter", color="#374151", size=10),
-        legend=dict(bgcolor="#ffffff", bordercolor="#E5E7EB", borderwidth=1, x=0, y=1),
+        font=dict(family="IBM Plex Mono", color="#d0d0d0", size=10),
+        legend=dict(bgcolor="#0d0d0d", bordercolor="#222222", borderwidth=1, x=0, y=1),
         margin=dict(l=0, r=0, t=30, b=0), height=540,
         title=dict(text=f"{ticker} 8D Market State Space — 3D Projection",
-                   font=dict(color="#374151", size=12, family="Inter")),
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
     )
     st.plotly_chart(fig3d, use_container_width=True)
 
@@ -1005,9 +1013,9 @@ with tabs[1]:
     ), secondary_y=True)
     fig_ev.update_layout(**PTHEME, height=260,
         title=dict(text="PCA Variance — How much each PC captures of the 8D market state",
-                   font=dict(color="#374151", size=12, family="Inter")))
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")))
     fig_ev.update_yaxes(title_text="Variance (%)", secondary_y=False,
-                         gridcolor="#E5E7EB", color="#6b7280")
+                         gridcolor="#1e1e1e", color="#888888")
     fig_ev.update_yaxes(title_text="Cumulative (%)", secondary_y=True,
                          showgrid=False, color=CB_CYAN)
     st.plotly_chart(fig_ev, use_container_width=True)
@@ -1046,11 +1054,11 @@ with tabs[2]:
         shade_anomalies(fig_obs, pred_anom, pd.Series(ts), row=r, col=c)
     fig_obs.update_layout(**PTHEME, height=520,
         title=dict(text="Market Observables — Rolling Window Analysis",
-                   font=dict(color="#374151", size=12, family="Inter")))
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")))
     for r in range(1,3):
         for c in range(1,3):
-            fig_obs.update_xaxes(gridcolor="#E5E7EB", linecolor="#E5E7EB", row=r, col=c)
-            fig_obs.update_yaxes(gridcolor="#E5E7EB", linecolor="#E5E7EB", row=r, col=c)
+            fig_obs.update_xaxes(gridcolor="#1e1e1e", linecolor="#2a2a2a", row=r, col=c)
+            fig_obs.update_yaxes(gridcolor="#1e1e1e", linecolor="#2a2a2a", row=r, col=c)
     st.plotly_chart(fig_obs, use_container_width=True)
 
     # Correlation
@@ -1065,15 +1073,15 @@ with tabs[2]:
         colorscale=[[0,CB_RED],[0.5,"#f8f7f4"],[1,CB_BLUE]],
         zmin=-1, zmax=1,
         text=np.round(corr,2), texttemplate="%{text}",
-        textfont=dict(size=11, color="#111827", family="Inter"),
+        textfont=dict(size=13, color="#ffffff", family="IBM Plex Mono"),
         colorbar=dict(title="ρ", thickness=12),
     ))
     _ptheme_no_axes = {k:v for k,v in PTHEME.items() if k not in ("xaxis","yaxis")}
     fig_corr.update_layout(**_ptheme_no_axes, height=300,
         title=dict(text="Observable × Manifold Distance Correlation",
-                   font=dict(color="#374151", size=12, family="Inter")),
-        xaxis=dict(gridcolor="#E5E7EB", linecolor="#E5E7EB", showgrid=False),
-        yaxis=dict(gridcolor="#E5E7EB", linecolor="#E5E7EB", showgrid=False))
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
+        xaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=False),
+        yaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=False))
     st.plotly_chart(fig_corr, use_container_width=True)
 
 
@@ -1105,7 +1113,7 @@ with tabs[3]:
             [0.00, "#7B0000"],   # deep red  (−4σ)
             [0.20, CB_RED],      # CB red    (−2.4σ)
             [0.40, "#FFCCBB"],   # pale red  (−0.8σ)
-            [0.50, "#F0F0F0"],   # light grey midpoint (0)
+            [0.50, "#1a1a1a"],   # dark midpoint (0)
             [0.60, "#BBDDFF"],   # pale blue (+0.8σ)
             [0.80, CB_BLUE],     # CB blue   (+2.4σ)
             [1.00, "#003366"],   # deep navy (+4σ)
@@ -1115,9 +1123,8 @@ with tabs[3]:
             thickness=14,
             tickvals=[-4, -2, 0, 2, 4],
             ticktext=["-4σ", "-2σ", "0", "+2σ", "+4σ"],
-            titlefont=dict(color="#374151", size=11),
-            tickfont=dict(color="#111827", size=11),
-            outlinecolor="#E5E7EB",
+            tickfont=dict(color="#e0e0e0", size=12),
+            outlinecolor="#333333",
             outlinewidth=1,
         ),
         zmid=0, zmin=-4, zmax=4,
@@ -1127,14 +1134,14 @@ with tabs[3]:
                    if k not in ("xaxis", "yaxis", "paper_bgcolor", "plot_bgcolor")}
     fig_heat.update_layout(
         **_heat_theme,
-        paper_bgcolor="#F8FAFC",
-        plot_bgcolor="#1E2433",
+        paper_bgcolor="#000000",
+        plot_bgcolor="#0a0a0a",
         height=360,
         title=dict(text="Market State Heatmap — 8 Financial Dimensions Over Time",
-                   font=dict(color="#374151", size=12, family="Inter")),
-        xaxis=dict(showgrid=False, linecolor="#374151", tickfont=dict(color="#374151"),
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
+        xaxis=dict(showgrid=False, linecolor="#374151", tickfont=dict(color="#e0e0e0", size=12),
                    nticks=12, tickangle=-45),
-        yaxis=dict(showgrid=False, linecolor="#374151", tickfont=dict(color="#374151"),
+        yaxis=dict(showgrid=False, linecolor="#374151", tickfont=dict(color="#e0e0e0", size=12),
                    autorange="reversed"),
     )
     st.plotly_chart(fig_heat, use_container_width=True)
@@ -1155,7 +1162,7 @@ with tabs[3]:
             ))
         fig_traj.update_layout(**PTHEME, height=340,
             title=dict(text="Standardised Feature Trajectories (σ units)",
-                       font=dict(color="#374151", size=12, family="Inter")),
+                       font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
             xaxis_title="Date", yaxis_title="Amplitude (σ)")
         st.plotly_chart(fig_traj, use_container_width=True)
 
@@ -1168,7 +1175,7 @@ with tabs[3]:
     fig_ph.add_trace(go.Scatter(
         x=proj2[-n_show:,0], y=proj2[-n_show:,1], mode="markers+lines",
         marker=dict(size=3.5, color=t_color,
-                    colorscale=[[0,"#E5E7EB"],[0.45,CB_CYAN],[1,CB_NAVY]],
+                    colorscale=[[0,"#111111"],[0.45,CB_CYAN],[1,"#00ffe0"]],
                     colorbar=dict(title="Time →", thickness=10),
                     showscale=True),
         line=dict(color="rgba(51,187,238,0.18)", width=0.7),
@@ -1185,7 +1192,7 @@ with tabs[3]:
     pc2_ev = pca2.explained_variance_ratio_ * 100
     fig_ph.update_layout(**PTHEME, height=380,
         title=dict(text="Phase Portrait — Market State Trajectory",
-                   font=dict(color="#374151", size=12, family="Inter")),
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
         xaxis_title=f"PC₁ ({pc2_ev[0]:.1f}%)",
         yaxis_title=f"PC₂ ({pc2_ev[1]:.1f}%)")
     st.plotly_chart(fig_ph, use_container_width=True)
@@ -1219,7 +1226,7 @@ with tabs[4]:
         annotation_font=dict(color=CB_ORANGE, size=9))
     fig_mah.update_layout(**PTHEME, height=330,
         title=dict(text="Manifold Distance Over Time — Did the stock leave its natural regime?",
-                   font=dict(color="#374151", size=12, family="Inter")),
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
         xaxis_title="Date", yaxis_title="Distance (σ)")
     st.plotly_chart(fig_mah, use_container_width=True)
 
@@ -1258,7 +1265,7 @@ with tabs[4]:
         name="Manifold Center"))
     fig_mb.update_layout(**PTHEME, height=440,
         title=dict(text="Natural Market Manifold — PC₁ × PC₂",
-                   font=dict(color="#374151", size=12, family="Inter")),
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
         xaxis_title="PC₁", yaxis_title="PC₂")
     st.plotly_chart(fig_mb, use_container_width=True)
 
@@ -1275,7 +1282,7 @@ with tabs[4]:
             annotation_font=dict(color=CB_ORANGE, size=10))
         fig_dh.update_layout(**PTHEME, height=280, barmode="overlay",
             title=dict(text="Distance Distribution",
-                       font=dict(color="#374151", size=12, family="Inter")),
+                       font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
             xaxis_title="Mahalanobis σ", yaxis_title="Days")
         st.plotly_chart(fig_dh, use_container_width=True)
     with c2:
@@ -1290,7 +1297,7 @@ with tabs[4]:
             annotation_font=dict(color=CB_RED, size=10))
         fig_cdf.update_layout(**PTHEME, height=280,
             title=dict(text="Empirical CDF",
-                       font=dict(color="#374151", size=12, family="Inter")),
+                       font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
             xaxis_title="Mahalanobis σ", yaxis_title="Percentile (%)")
         st.plotly_chart(fig_cdf, use_container_width=True)
 
@@ -1329,9 +1336,9 @@ with tabs[5]:
             textfont=dict(size=10, color="#111827", family="Inter"),
         ))
         fig_rho.update_layout(**{k:v for k,v in PTHEME.items() if k not in ("xaxis","yaxis")}, height=370,
-            title=dict(text=title_s, font=dict(color="#374151", size=12, family="Inter")),
-            xaxis=dict(gridcolor="#E5E7EB", linecolor="#E5E7EB", showgrid=False, tickangle=35),
-            yaxis=dict(gridcolor="#E5E7EB", linecolor="#E5E7EB", showgrid=False))
+            title=dict(text=title_s, font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
+            xaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=False, tickangle=35),
+            yaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=False))
         col_obj.plotly_chart(fig_rho, use_container_width=True)
 
     st.markdown('<div class="sec">Eigenvalue Spectrum — Market Mode Analysis</div>',
@@ -1346,7 +1353,7 @@ with tabs[5]:
         marker_color=CB_RED, opacity=0.85, name="Anomalous ρ"))
     fig_eig.update_layout(**PTHEME, height=280, barmode="group",
         title=dict(text="Eigenvalue Spectrum λᵢ — Which market modes dominate each regime",
-                   font=dict(color="#374151", size=12, family="Inter")),
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
         yaxis_title="Eigenvalue λ")
     st.plotly_chart(fig_eig, use_container_width=True)
 
@@ -1362,9 +1369,9 @@ with tabs[5]:
     ))
     fig_diff.update_layout(**{k:v for k,v in PTHEME.items() if k not in ("xaxis","yaxis")}, height=360,
         title=dict(text="Which feature correlations break down during anomalous regimes",
-                   font=dict(color="#374151", size=12, family="Inter")),
-        xaxis=dict(gridcolor="#E5E7EB", linecolor="#E5E7EB", showgrid=False, tickangle=35),
-        yaxis=dict(gridcolor="#E5E7EB", linecolor="#E5E7EB", showgrid=False))
+                   font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
+        xaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=False, tickangle=35),
+        yaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=False))
     st.plotly_chart(fig_diff, use_container_width=True)
 
     S_n  = vn_entropy(rho_n); S_a = vn_entropy(rho_a)
@@ -1576,8 +1583,7 @@ with tabs[6]:
                 colorbar=dict(
                     title="Sharpe Ratio",
                     thickness=12,
-                    titlefont=dict(color="#374151", size=10),
-                    tickfont=dict(color="#111827", size=10),
+                    tickfont=dict(color="#e0e0e0", size=11),
                 ),
                 opacity=0.65,
                 cmin=float(np.percentile(sim_sharpe, 5)),
@@ -1602,7 +1608,7 @@ with tabs[6]:
                         line=dict(color="#ffffff", width=2)),
             text=_asset_labels,
             textposition="top center",
-            textfont=dict(size=12, color="#111827", family="Inter"),
+            textfont=dict(size=13, color="#ffffff", family="IBM Plex Mono"),
             hovertemplate="<b>%{text}</b><br>Return: %{y:.1f}%<br>Vol: %{x:.1f}%<extra></extra>",
             name="Individual Assets",
         ))
@@ -1615,7 +1621,7 @@ with tabs[6]:
                         line=dict(color="#ffffff", width=2)),
             text=["<b>Equal Weight</b>"],
             textposition="top right",
-            textfont=dict(size=12, color="#111827", family="Inter"),
+            textfont=dict(size=13, color="#ffffff", family="IBM Plex Mono"),
             hovertemplate=f"<b>Equal Weight</b><br>Return: {r_eq*100:.1f}%<br>Vol: {v_eq*100:.1f}%<br>Sharpe: {s_eq:.3f}<extra></extra>",
             name=f"Equal Weight (Sharpe {s_eq:.2f})",
         ))
@@ -1628,7 +1634,7 @@ with tabs[6]:
                         line=dict(color="#ffffff", width=2)),
             text=["<b>Min Vol</b>"],
             textposition="top right",
-            textfont=dict(size=12, color="#111827", family="Inter"),
+            textfont=dict(size=13, color="#ffffff", family="IBM Plex Mono"),
             hovertemplate=f"<b>Min Volatility</b><br>Return: {r_minvol*100:.1f}%<br>Vol: {v_minvol*100:.1f}%<br>Sharpe: {s_minvol:.3f}<extra></extra>",
             name=f"Min Volatility (Sharpe {s_minvol:.2f})",
         ))
@@ -1662,7 +1668,7 @@ with tabs[6]:
         layout["height"] = 520
         layout["title"] = dict(
             text="Efficient Frontier — Each dot is a portfolio. Color = Sharpe ratio.",
-            font=dict(color="#374151", size=12, family="Inter")
+            font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")
         )
         
         # ✅ FIX: update existing axis dicts instead of using xaxis_title
@@ -1694,12 +1700,12 @@ with tabs[6]:
         ]:
             with col:
                 st.markdown(f"""
-                <div style="background:#fafaf8;border:1.5px solid #E5E7EB;border-radius:12px;
+                <div style="background:#0d0d0d;border:1.5px solid #222222;border-radius:12px;
                             padding:1rem 1.2rem;margin-bottom:1rem;">
                   <div style="font-weight:700;font-size:.9rem;color:{color};margin-bottom:.2rem">
                     {label}
                   </div>
-                  <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#374151">
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:#cccccc">
                     Sharpe: {sharpe_v:.3f}
                   </div>
                 </div>
@@ -1720,22 +1726,22 @@ with tabs[6]:
                     marker_line_width=_bar_widths,
                     text=_bar_text,
                     textposition="outside",
-                    textfont=dict(size=12, color="#111827", family="Inter"),
+                    textfont=dict(size=13, color="#ffffff", family="IBM Plex Mono"),
                 ))
             
                 _wgt_theme = {k: v for k, v in PTHEME.items() if k not in ("xaxis", "yaxis")}
                 fig_wgt.update_layout(
                     **_wgt_theme,
                     height=320,
-                    title=dict(text=f"{label} — Weights", font=dict(color="#111827", size=13, family="Inter")),
-                    xaxis=dict(gridcolor="#E5E7EB", linecolor="#E5E7EB", showgrid=False, zeroline=False,
-                               tickfont=dict(size=12, color="#111827", family="Inter")),
+                    title=dict(text=f"{label} — Weights", font=dict(color="#ffffff", size=13, family="IBM Plex Mono")),
+                    xaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=False, zeroline=False,
+                               tickfont=dict(size=13, color="#e0e0e0", family="IBM Plex Mono")),
                     yaxis=dict(
                         title="Weight (%)",
-                        gridcolor="#E5E7EB",
-                        linecolor="#E5E7EB",
+                        gridcolor="#1e1e1e",
+                        linecolor="#2a2a2a",
                         zeroline=False,
-                        tickfont=dict(size=11, color="#111827"),
+                        tickfont=dict(size=12, color="#e0e0e0"),
                         range=[0, max(w_opt)*1.35]
                     ),
                     showlegend=False,
@@ -1760,14 +1766,14 @@ with tabs[6]:
                     pull=_pie_pull,
                     marker=dict(colors=colors_pie[:n_assets],
                                 line=dict(color="#ffffff", width=2)),
-                    textfont=dict(size=12, color="#111827", family="Inter"),
+                    textfont=dict(size=13, color="#ffffff", family="IBM Plex Mono"),
                     textinfo="label+percent",
                     hovertemplate="<b>%{label}</b><br>Weight: %{value:.1f}%<extra></extra>",
                 ))
                 fig_pie.update_layout(
                     **PTHEME, height=320,
                     title=dict(text=f"{label} — Allocation",
-                               font=dict(color="#374151", size=12, family="Inter")),
+                               font=dict(color="#d0d0d0", size=13, family="IBM Plex Mono")),
                     showlegend=False,
                 )
                 st.plotly_chart(fig_pie, use_container_width=True)
@@ -1783,28 +1789,27 @@ with tabs[6]:
             x=_corr_labels, y=_corr_labels,
             colorscale=[
                 [0.0, CB_RED],
-                [0.5, "#F0F0F0"],
+                [0.5, "#111111"],
                 [1.0, CB_BLUE],
             ],
             zmin=-1, zmax=1,
             text=np.round(corr_matrix, 2),
             texttemplate="%{text}",
-            textfont=dict(size=12, color="#111827", family="Inter"),
+            textfont=dict(size=13, color="#ffffff", family="IBM Plex Mono"),
             colorbar=dict(title="ρ", thickness=12,
-                          titlefont=dict(color="#111827", size=12),
-                          tickfont=dict(color="#111827", size=11)),
+                          tickfont=dict(color="#e0e0e0", size=12)),
         ))
         _pt2 = {k:v for k,v in PTHEME.items() if k not in ("xaxis","yaxis")}
         fig_corr.update_layout(
             **_pt2, height=420,
             title=dict(
                 text="Return Correlation — Lower correlation = better diversification",
-                font=dict(color="#111827", size=13, family="Inter")
+                font=dict(color="#ffffff", size=13, family="IBM Plex Mono")
             ),
-            xaxis=dict(gridcolor="#E5E7EB", linecolor="#E5E7EB", showgrid=False,
-                       tickfont=dict(size=12, color="#111827", family="Inter")),
-            yaxis=dict(gridcolor="#E5E7EB", linecolor="#E5E7EB", showgrid=False,
-                       tickfont=dict(size=12, color="#111827", family="Inter")),
+            xaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=False,
+                       tickfont=dict(size=13, color="#e0e0e0", family="IBM Plex Mono")),
+            yaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=False,
+                       tickfont=dict(size=13, color="#e0e0e0", family="IBM Plex Mono")),
         )
         st.plotly_chart(fig_corr, use_container_width=True)
 
@@ -1835,7 +1840,7 @@ with tabs[6]:
             marker_line_width=_anom_widths,
             text=_anom_text,
             textposition="outside",
-            textfont=dict(size=12, color="#111827", family="Inter"),
+            textfont=dict(size=13, color="#ffffff", family="IBM Plex Mono"),
         ))
         fig_anom.add_hline(y=20, line_dash="dash", line_color=CB_RED,
                            annotation_text=" High anomaly threshold (20%)",
@@ -1848,12 +1853,12 @@ with tabs[6]:
             **_anom_theme, height=340,
             title=dict(
                 text="% of Days Outside Natural 8D Manifold — quantum regime instability",
-                font=dict(color="#111827", size=13, family="Inter")
+                font=dict(color="#ffffff", size=13, family="IBM Plex Mono")
             ),
-            xaxis=dict(gridcolor="#E5E7EB", linecolor="#E5E7EB", showgrid=False, zeroline=False,
-                       tickfont=dict(size=12, color="#111827", family="Inter")),
-            yaxis=dict(title="Anomaly Rate (%)", gridcolor="#E5E7EB", linecolor="#E5E7EB",
-                       zeroline=False, tickfont=dict(size=11, color="#111827"),
+            xaxis=dict(gridcolor="#1e1e1e", linecolor="#2a2a2a", showgrid=False, zeroline=False,
+                       tickfont=dict(size=13, color="#e0e0e0", family="IBM Plex Mono")),
+            yaxis=dict(title="Anomaly Rate (%)", gridcolor="#1e1e1e", linecolor="#2a2a2a",
+                       zeroline=False, tickfont=dict(size=12, color="#e0e0e0"),
                        range=[0, max(anom_vals or [10]) * 1.4]),
             showlegend=False,
         )
